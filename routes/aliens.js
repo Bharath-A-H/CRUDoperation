@@ -46,15 +46,15 @@ router.patch('/:id',async(req,res)=> {
     }
 
 })
-router.delete('/:id',async(req,res)=> {
-    try{
-        const alien = await Alien
-        alien.sub = req.body.sub
-        const a1 = await alien
-        res.json(a1)   
-    }catch(err){
-        res.send('Error')
+router.delete('/:id', async (req, res) => {
+    try {
+        const alien = await Alien.findByIdAndDelete(req.params.id);
+        if (!alien) {
+            return res.status(404).json({ message: "Alien not found" });
+        }
+        res.json({ message: "Alien deleted successfully" });
+    } catch (err) {
+        res.status(500).send('Error');
     }
-
-})
+});
 module.exports=router
